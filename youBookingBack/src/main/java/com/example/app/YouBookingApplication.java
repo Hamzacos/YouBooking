@@ -1,11 +1,13 @@
 package com.example.app;
 
 import com.example.app.Entity.Hotel;
+import com.example.app.Entity.Room;
 import com.example.app.Entity.appRole;
 import com.example.app.Entity.appUser;
 import com.example.app.Sevice.AdminService;
 import com.example.app.Sevice.Impl.AdminServiceImpl;
 import com.example.app.Sevice.Impl.HotelServiceImpl;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -26,6 +28,8 @@ public class YouBookingApplication  {
 
     public static void main(String[] args) {
         SpringApplication.run(YouBookingApplication.class, args);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerSubtypes(Room.class);
     }
 
     @Bean
@@ -48,7 +52,7 @@ public class YouBookingApplication  {
 ²
             accountService.addRoleToUser("user1","Client");
             accountService.addRoleToUser("user2","Client");
-            accountService.addRoleToUser("Client3","Client");
+//            accountService.addRoleToUser("Client3","Client");
             accountService.addRoleToUser("user1","Manger");
             accountService.addRoleToUser("Sniper","Admin");
 

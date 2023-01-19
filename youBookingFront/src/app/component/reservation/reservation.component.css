@@ -1,0 +1,90 @@
+/*body {
+  background-color: #ff4242;
+  font-family: "Lora", serif;
+}
+.pagination {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 40px;
+  box-shadow: 0 5px 25px 0 rgba(0, 0, 0, 0.5);
+}
+.pagination li {
+  display: inline-block;
+  list-style: none;
+}
+.pagination li a {
+
+  line-height: 40px;
+  background-color: #fff;
+  text-align: center;
+  text-decoration: none;
+  color: #252525;
+  border-radius: 4px;
+  margin: 5px;
+  box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.1), 0 2px 5px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+}
+.pagination li a:hover, .pagination li a.active {
+  color: #fff;
+  background-color: #ff4242;
+}
+.pagination li:first-child a {
+  border-radius: 40px 0 0 40px;
+}
+.pagination li:last-child a {
+  border-radius: 0 40px 40px 0;
+}*/
+.panel{
+  padding: 0;
+  border-radius: 10px;
+  border: none;
+  box-shadow: 0 0 0 5px rgba(0,0,0,0.05),0 0 0 10px rgba(0,0,0,0.05);
+}
+.her{
+  background: linear-gradient(to right, #2980b9, #2c3e50);
+}
+.block-27 ul {
+  padding: 0;
+  margin: 0; }
+.block-27 ul li {
+  display: inline-block;
+  margin-bottom: 4px;
+  font-weight: 400; }
+.block-27 ul li a, .block-27 ul li span {
+  color: gray;
+  text-align: center;
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  border-radius: 50%;
+  border: 1px solid #e6e6e6; }
+.block-27 ul li.active a, .block-27 ul li.active span {
+  background: #4ba1fa;
+  color: #fff;
+  border: 1px solid transparent; }
+
+.plain {
+  text-decoration: none;
+  gap: 10px;
+  display: flex;
+}
+
+.div {
+  display: flex;
+  justify-content: center;
+
+}
+
+.link {
+  text-decoration: none;
+}
+li a:hover, .pagination li a.active {
+  color: #fff;
+  background-color: #2b5ec4;
+}

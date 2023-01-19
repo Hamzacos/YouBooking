@@ -1,19 +1,20 @@
 package com.example.app.Sevice.Impl;
 
+import com.example.app.DTO.HotelDTO;
 import com.example.app.Entity.Hotel;
-import com.example.app.Entity.appUser;
 import com.example.app.Repositry.HotelReposetry;
 import com.example.app.Repositry.UserRepository;
 import com.example.app.Sevice.HotelService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class HotelServiceImpl implements HotelService {
@@ -25,6 +26,8 @@ public class HotelServiceImpl implements HotelService {
     UserRepository userRepository;
     @Autowired
     AdminServiceImpl adminService;
+    @Autowired
+    private ModelMapper modelMapper;
 
 
     @Override
@@ -50,8 +53,11 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    public List<Hotel> listHotel() {
-        return hotelReposetry.findAll();
+    public List<HotelDTO> listHotel() {
+        List<Hotel> hotels = hotelReposetry.findAll();
+        return hotels.stream()
+                .map(hotel -> modelMapper.map(hotel, HotelDTO.class))
+                .collect(Collectors.toList());
     }
 
 
@@ -60,6 +66,15 @@ public class HotelServiceImpl implements HotelService {
         Hotel existingHotel =hotelReposetry.findById(hotelId).get();
         existingHotel.setApproved(Boolean.TRUE);
         return hotelReposetry.save(existingHotel);
+    }
+
+    @Override
+    public HotelDTO getById(Long id) {
+        Optional<Hotel> hotel = hotelReposetry.findById(id);
+        if(!hotel.isPresent()){
+            throw new IllegalStateException("Hotel non trouvée");
+        }
+        return modelMapper.map(hotel.get(), HotelDTO.class);
     }
 
     @Override

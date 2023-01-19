@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,18 +32,6 @@ public class AdminController {
     @Autowired
     private AdminServiceImpl adminService;
 
-
-    @PostMapping(path = "/login")
-    public ResponseEntity<String> login(@RequestBody appUser user){
-        String token = Jwts.builder()
-                .setSubject(user.getUsername())
-                .setExpiration(new Date(System.currentTimeMillis() + JWTUtil.EXPIRE_TOKEN))
-                .signWith(SignatureAlgorithm.HS512, SECRET)
-                .compact();
-
-        // return the token as a response to the Angular app
-        return ResponseEntity.ok(token);
-    }
 
     @GetMapping(path = "/users")
     @PostAuthorize("hasAnyAuthority('Admin')")
@@ -73,7 +63,13 @@ public class AdminController {
         return "{message succes}";
     }
 
+    @GetMapping(path = "/utlisateur")
+    public String currentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getName();
+    }
 }
+
 
 @Data
 class RoleUserForm{

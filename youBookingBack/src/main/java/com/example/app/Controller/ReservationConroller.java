@@ -1,17 +1,20 @@
 package com.example.app.Controller;
 
 
+import com.example.app.DTO.ReservationDTO;
 import com.example.app.Entity.Reservation;
 import com.example.app.Entity.Room;
 import com.example.app.Repositry.RoomReposetry;
 import com.example.app.Sevice.Impl.ReservationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class ReservationConroller {
@@ -22,13 +25,13 @@ public class ReservationConroller {
     @Autowired
     private RoomReposetry roomReposetry;
 
-    @PostMapping(path = "/addReseration")
-    public ResponseEntity<Object> AddResrvation(@RequestBody Reservation reservation){
+    @PostMapping(path = "/addReservation")
+    public ResponseEntity<Object> AddResrvation(@RequestBody ReservationDTO reservation){
         return reservationService.AddReservation(reservation);
     }
 
     @GetMapping(path = "/Reservation")
-    public List<Reservation> showAllResrvation(){
+    public List<ReservationDTO> showAllResrvation(){
         return reservationService.showAll();
     }
 
@@ -38,22 +41,27 @@ public class ReservationConroller {
         return "Deleted Successfully";
     }
 
-    @GetMapping("/checkAvailability")
-    public boolean checkAvailability(@RequestParam Long roomId,
-                                     @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-                                     @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate){
-        Room room = roomReposetry.findById(roomId).orElse(null);
-        return reservationService.isRoomAvailable(room, startDate, endDate);
+    @PutMapping("/cancel/{reservationId}")
+    public ResponseEntity<Object> cancelReservation(@PathVariable Long reservationId) {
+        boolean isCanceled = reservationService.cancelReservation(reservationId);
+        if(isCanceled) {
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/calculateTotal")
-    public ResponseEntity<Double> calculateTotal(@RequestParam Long roomId,
-                                                 @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-                                                 @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
-        Room room = roomReposetry.findById(roomId).orElse(null);
-        if (room == null) {
-            return ResponseEntity.badRequest().build();
-        }
-        return ResponseEntity.ok(reservationService.calculateReservationTotal(room, startDate, endDate));
+    @PutMapping("/updateReservation/{id}")
+    public ResponseEntity<Void> updateReservation(@PathVariable Long id,
+                                                  @RequestParam(value = "startDate", required = true)
+                                                  @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate checkin,
+                                                  @RequestParam(value = "endDate",required = true)
+                                                      @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate checkout) {
+        reservationService.updateReservation(id, checkin, checkout);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+        @GetMapping("/my-reservations")
+        public List<ReservationDTO> getMyReservations() {
+            return reservationService.getMyReservations();
     }
 }

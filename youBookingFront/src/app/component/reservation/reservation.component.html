@@ -1,0 +1,120 @@
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/home-client">YouBooking</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mynavbar">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/reservation">Reservation</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="javascript:void(0)">Vols</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="javascript:void(0)">Attraction</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link"(click)="logout()">Déconnexion</a>
+        </li>
+      </ul>
+      <form class="d-flex">
+        <input class="form-control me-2" type="text" placeholder="Search">
+        <button class="btn btn-primary" type="button">Search</button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+<div class="container py-5">
+
+  <div class="row" *ngIf="reservation.length; else noReservations">
+    <div class="col-md-offset-1 col-md-10">
+      <div class="panel">
+        <H3 class="text-center pt-5"><em>Reservation</em></H3>
+        <table class="table align-middle mb-0 bg-white">
+          <thead class="bg-secondary">
+          <tr class="text-white">
+            <th>#</th>
+            <th>Date Check-In</th>
+            <th>Date Check-Out</th>
+            <th>Status</th>
+            <th>Totale Price</th>
+            <th>Number of Your Room</th>
+            <th class="px-5">Actions</th>
+          </tr>
+          </thead>
+<!--          <div *ngIf="itemsToDisplay.length; else noReservations">-->
+          <tbody *ngFor = "let reserv of itemsToDisplay">
+          <tr>
+            <td> </td>
+            <td><p>{{reserv.startDate}}</p> </td>
+            <td>{{reserv.endDate}}</td>
+            <td>
+      <span class="badge rounded-pill d-inline"  [ngClass]="{'bg-success': reserv.status === 'Accepter', 'bg-danger':reserv.status === 'Annuler'}"
+      >{{reserv.status}}</span>
+            </td>
+            <td>{{reserv.totalPrice}} DH</td>
+            <td class="px-5">{{reserv.room.name}}</td>
+            <td>
+              <button type="button" class="btn badge bg-primary rounded-pill d-inline mx-3" (click)="openUpdateModal(reserv)">Update</button>
+              <button type="button" class="btn badge bg-danger rounded-pill d-inline"  (click)="cancelReserve(reserv.id_reservation)">Cancel</button>
+            </td>
+          </tr>
+          </tbody>
+<!--          </div>-->
+        </table>
+        <div class="row mb-5 py-3">
+          <div class="div">
+            <div class="block-27">
+              <ul class="plain justify-content-center " >
+                <li><a class="link px-2"  (click)="prevPage()" [class.disabled]="currentPage === 1">&lt;</a></li>
+                <li><a class="active link" *ngFor="let page of pages" (click)="goToPage(page)" [class.active]="currentPage === page">{{page}}</a></li>
+                <li><a class="link"   (click)="nextPage()" [class.disabled]="currentPage === totalPages">&gt;</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<ng-template #noReservations>
+  <div class="no-reservations"  class="text-center" >
+    <img src="./assets/undraw_notify_re_65on.svg" style="width:300PX;HEIGHT:300px;" alt="Aucune réservation trouvée">
+    <h2><em>Aucune réservation trouvée pour cet utilisateur</em></h2>
+  </div>
+</ng-template>
+
+
+<ng-template #updateModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Book </h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="mb-3">
+        <label>Check-in</label>
+        <div class="input-group" >
+          <input [(ngModel)]="selectedReservation.startDate" name="startDate" type="date" required>
+          <button class="btn btn-outline-secondary bi bi-calendar3"  type="button"></button>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label>Check-out</label>
+        <div class="input-group">
+          <input [(ngModel)]="selectedReservation.endDate" name="endDate" type="date" required>
+          <button class="btn btn-outline-secondary bi bi-calendar3"  type="button"></button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="updateReservation(selectedReservation.id_reservation,selectedReservation.startDate,selectedReservation.endDate)" >Enregistrer</button>
+  </div>
+</ng-template>
+

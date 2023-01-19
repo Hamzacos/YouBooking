@@ -1,0 +1,116 @@
+<div *ngIf="hotel">
+<section class="banner_area">
+  <div *ngIf="hotel" class="booking_table d_flex align-items-center">
+    <div  class="overlay bg-parallax" data-stellar-ratio="0.9" data-stellar-vertical-offset="0" data-background=""></div>
+    <div class="container" >
+      <div  class="banner_content text-center">
+        <h6>Away from monotonous life</h6>
+        <h2>{{hotel.name}}</h2>
+        <p>If you are looking at blank cassettes on the web, you may be very confused at the<br> difference in price. You may see some for as low as $.17 each.</p>
+      </div>
+    </div>
+  </div>
+  <div class="hotel_booking_area position">
+    <div class="container">
+      <div class="hotel_booking_table text-center">
+        <!--<div class="col-md-3">
+          <h2>Book<br> Your Room</h2>
+        </div>-->
+<!--        <div class="col-md-9">
+          <div class="boking_table">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="book_tabel_item">
+                  <div class="form-group">
+                    <div class='input-group date' id='datetimepicker11'>
+                      <input type='Date' class="form-control" placeholder="Arrival Date"/>
+                      <span class="input-group-addon">
+                                                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                    </span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class='input-group date' id='datetimepicker1'>
+                      <input type='Date' class="form-control" placeholder="Departure Date"/>
+                      <span class="input-group-addon">
+                                                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                    </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="book_tabel_item text-center">
+                  <a class="book_now_btn button_hover my-4" href="#">Check Availability</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>-->
+      </div>
+    </div>
+  </div>
+</section>
+<!--================Banner Area =================-->
+
+<!--================ Accomodation Area  =================-->
+<section class="accomodation_area section_gap">
+  <div class="container">
+    <div class="section_title text-center">
+      <h2 class="title_color">Our Room</h2>
+      <p>We all live in an age that belongs to the young at heart. Life that is becoming extremely fast, </p>
+    </div>
+    <div  class="row mb_30">
+      <div *ngFor="let room of hotel.rooms" class="col-lg-3 col-sm-6">
+        <div class="accomodation_item text-center">
+          <div class="hotel_img">
+           <img src="./assets/room2.jpg" alt="">
+            <button class="btn theme_btn button_hover" (click)="onBookNow(room.roomId,room.price)">Book Now</button>
+          </div>
+          <a href="#"><h4 class="sec_h4">{{ room.name }}</h4></a>
+          <h5>{{ room.price }} DH<small>/night</small></h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+
+<ng-template #content let-modal >
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Book </h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form (ngSubmit)="makeReservation()" [formGroup]="reservationForm">
+      <div class="mb-3">
+        <label for="startDate">Check-in</label>
+        <div class="input-group">
+          <input [(ngModel)]="form.startDate" formControlName="startDate" id="startDate" class="form-control" placeholder="yyyy-mm-dd" type="DATE" />
+          <button class="btn btn-outline-secondary bi bi-calendar3"  type="button" ></button>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="endDate">Check-out</label>
+        <div class="input-group">
+          <input [(ngModel)]="form.endDate" formControlName="endDate" id="endDate" class="form-control" placeholder="yyyy-mm-dd" type="DATE" />
+          <button class="btn btn-outline-secondary bi bi-calendar3"  type="button"></button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-outline-dark">Save</button>
+      </div>
+    </form>
+  </div>
+
+
+</ng-template>
+<hr />
+
+<!--
+<pre>{{ closeResult }}</pre>
+-->
+
+
+
